@@ -118,7 +118,7 @@ fetch/test.js
 	
 
 
-#### koa2
+## koa2
 
 	安装：npm i koa koa-router -D
 
@@ -176,6 +176,78 @@ webpack.config.js
     },
 
 
+## 20171108 redux数据状态管理插件
+
+解决组件之间数据传递
+
+	安装： npm i redux react-redux -S
+
+ Redux 的适用场景：多交互、多数据源
+
+#### Store
+
+Store 就是保存数据的地方，你可以把它看成一个容器。整个应用只能有一个 Store。
+
+Redux 提供createStore这个函数，用来生成 Store。
+
+	import {createStore} from 'redux'
+	
+	const store = createStore(reducer) 
+
+#### State
+
+Store对象包含所有数据。如果想得到某个时点的数据，就要对 Store 生成快照。这种时点的数据集合，就叫做 State。
+
+当前时刻的 State，可以通过store.getState()拿到。
+
+Redux 规定， 一个 State 对应一个 View。只要 State 相同，View 就相同。你知道 State，就知道 View 是什么样，反之亦然。
+
+	store.getState()
+
+#### Action
+
+State 的变化，会导致 View 的变化。但是，用户接触不到 State，只能接触到 View。
+
+所以，State 的变化必须是 View 导致的。Action 就是 View 发出的通知，表示 State 应该要发生变化了。
+
+Action 是一个对象。其中的type属性是必须的，表示 Action 的名称。其他属性可以自由设置
+
+Action 描述当前发生的事情。**改变 State 的唯一办法，就是使用 Action。它会运送数据到 Store**。
+
+	store.dispatch(action)
+
+store.dispatch()是 View 发出 Action 的唯一方法。
+
+#### reducer
+
+Store 收到 Action 以后，必须给出一个新的 State，这样 View 才会发生变化。这种 State 的计算过程就叫做 Reducer。
+
+Reducer 是一个纯函数（只要是同样的输入，必定得到同样的输出。），它接受 Action 和当前 State 作为参数，返回一个新的 State。
+
+    function reducer(state = 0, action) {
+        switch (action.type) {
+            case 'INCREMENT':
+                return state + 1
+            case 'DECREMENT':
+                return state - 1
+            default:
+                return state
+        }
+    }
+
+#### store.subscribe()
+
+Store 允许使用store.subscribe方法设置监听函数，一旦 State 发生变化，就自动执行这个函数。
+
+	store.subscribe(listener);
+
+store.subscribe方法返回一个函数，调用这个函数就可以解除监听。
+
+	let unsubscribe = store.subscribe(() =>
+	  console.log(store.getState())
+	);
+	
+	unsubscribe();
 
 
 
